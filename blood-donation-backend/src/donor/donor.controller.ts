@@ -1,7 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { DonorService } from './donor.service';
 import { Body } from '@nestjs/common';
-import { CreateDonorDto } from './create.donor.dto';
+import { CreateDonorDto } from './Create.donor.dto';
 
 
 

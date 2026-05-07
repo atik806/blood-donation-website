@@ -16,7 +16,7 @@ import { Donor } from './donor/donor.entity';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'password',
+      password: '28444556',
       database: 'blood_donation',
       entities: [Donor],
       synchronize: true,
