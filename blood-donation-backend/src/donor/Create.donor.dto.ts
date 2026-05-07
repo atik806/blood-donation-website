@@ -8,8 +8,7 @@ import {
 from 'class-validator';
 
 export class CreateDonorDto {
-    @IsNotEmpty()
-     @IsNotEmpty()
+  @IsNotEmpty()
   @IsString()
   name: string;
 
