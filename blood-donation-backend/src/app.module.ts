@@ -1,9 +1,28 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { DonorModule } from './donor/donor.module';
+import { PatientModule } from './patient/patient.module';
+import { AdminModule } from './admin/admin.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Donor } from './donor/donor.entity';
+
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'password',
+      database: 'blood_donation',
+      entities: [Donor],
+      synchronize: true,
+    }),
+
+    AuthModule, DonorModule, PatientModule, AdminModule],
   controllers: [AppController],
   providers: [AppService],
 })
