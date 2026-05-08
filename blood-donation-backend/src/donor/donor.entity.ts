@@ -27,5 +27,8 @@ export class Donor {
 
     @Column({ default: true })
     available: boolean;
+
+    @Column({ default: 'donor' })
+    roles: string;
 }
 

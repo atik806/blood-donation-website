@@ -3,9 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Donor } from './donor.entity';
 import { CreateDonorDto } from './Create.donor.dto';
-
-
-
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class DonorService {
@@ -15,8 +13,23 @@ export class DonorService {
     ) {}
 
     public async createDonor(createDonorDto: CreateDonorDto): Promise<Donor> {
-        const donor = this.donorRepository.create(createDonorDto);
-        return await this.donorRepository.save(donor);
+        const hashedPassword = await bcrypt.hash(createDonorDto.password, 10);
+        return this.createDonorWithPassword(createDonorDto, hashedPassword);
+    }
+
+    public async createDonorWithPassword(createDonorDto: CreateDonorDto, hashedPassword: string): Promise<Donor> {
+        const donor = this.donorRepository.create({
+            name: createDonorDto.name,
+            email: createDonorDto.email,
+            password: hashedPassword,
+            bloodGroup: createDonorDto.bloodGroup,
+            phone: createDonorDto.phone ?? null,
+            address: createDonorDto.address ?? null,
+            available: createDonorDto.available ?? true,
+            roles: 'donor',
+        });
+
+        return this.donorRepository.save(donor);
     }
 
     public async getAllDonors(){
