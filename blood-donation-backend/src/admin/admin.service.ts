@@ -15,38 +15,35 @@ export class AdminService {
     private donorRepository: Repository<Donor>,
   ) {}
 
-  //create the admin
+  public async findByEmail(email:string){
+    return await this.adminRepository.findOne({
+        where: {email},
+    });
+  }
 
-  async create(adminDto: CreateAdminDto) {
+  async create(adminDto:CreateAdminDto){
     const admin = this.adminRepository.create(adminDto);
     return await this.adminRepository.save(admin);
   }
 
-  //get all the donors
-
-  public async getAllDonors() {
+  public async getAllDonors(){
     return await this.donorRepository.find();
   }
 
-  public async getDonorById(id: number) {
+  public async getDonorById(id:number){
     return await this.donorRepository.findOne({
-      where: { id },
+        where:{ id },
     });
   }
 
-  public async getDonorByEmail(email: string) {
-    return await this.donorRepository.findOne({
-      where: { email },
-    });
-  }
-
-  public async updateDonor(id: number, updateData: Partial<Donor>) {
+  public async updateDonor(id:number, updateData: Partial<Donor>){
     await this.donorRepository.update(id, updateData);
     return this.getDonorById(id);
   }
 
-  public async deleteDonor(id: number) {
+  public async deleteDonor(id:number){
     await this.donorRepository.delete(id);
     return { message: 'Donor deleted successfully' };
   }
+
 }

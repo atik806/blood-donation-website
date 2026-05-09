@@ -9,5 +9,6 @@ import { Donor } from 'src/donor/donor.entity';
 
   controllers: [AdminController],
   providers: [AdminService],
+  exports: [AdminService],
 })
 export class AdminModule {}

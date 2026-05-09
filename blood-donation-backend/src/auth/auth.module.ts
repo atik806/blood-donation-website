@@ -5,6 +5,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtGuard } from './jwtGuard.guard';
 import { RolesGuard } from './roles/roles.guard';
 import { DonorModule } from 'src/donor/donor.module';
+import { AdminModule } from 'src/admin/admin.module';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -13,6 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
 
   imports: [
     DonorModule,
+    AdminModule,
     JwtModule.register({
       secret: 'blood donation secret',
       signOptions: { expiresIn: '1h' },

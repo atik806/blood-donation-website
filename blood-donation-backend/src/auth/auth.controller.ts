@@ -7,6 +7,7 @@ import { Roles } from './roles.decorator';
 import { Donor } from 'src/donor/donor.entity';
 import { currentDonor } from './current-donor-decorator';
 
+
 enum Role {
   ADMIN = 'admin',
   DONOR = 'donor',
@@ -52,4 +53,16 @@ export class AuthController {
   async getDonorById(@Param('id') id: number) {
     return await this.authService.findDonorById(id);
   }
+
+
+  @Post('admin/login')
+  loginAdmin(@Body() loginDto:LoginDto){
+    return this.authService.loginAdmin(loginDto);
+  }
+  @Post('admin/register')
+  registerAdmin(@Body() body: any) {
+    return this.authService.registerAdmin(body);
+  }
+
+
 }
