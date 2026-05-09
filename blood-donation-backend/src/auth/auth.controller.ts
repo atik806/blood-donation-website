@@ -15,43 +15,41 @@ enum Role {
 
 @Controller('auth')
 export class AuthController {
-    constructor(
-        private readonly authService: AuthService,
-    ) {}
+  constructor(private readonly authService: AuthService) {}
 
-    @Post('register')
-    @Public()
-    async register(@Body() CreateDonorDto: CreateDonorDto){
-        return await this.authService.registerDonor(CreateDonorDto);
-    }
+  @Post('register')
+  @Public()
+  async register(@Body() CreateDonorDto: CreateDonorDto) {
+    return await this.authService.registerDonor(CreateDonorDto);
+  }
 
-    @Post('login')
-    @Public()
-    async login(@Body() LoginDto){
-        return await this.authService.loginDonor(LoginDto);
-    }
+  @Post('login')
+  @Public()
+  async login(@Body() LoginDto) {
+    return await this.authService.loginDonor(LoginDto);
+  }
 
-    @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
-    @Get('protected')
-    saySomething(){
-        return 'Hello from auth';
-    }
+  @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
+  @Get('protected')
+  saySomething() {
+    return 'Hello from auth';
+  }
 
-    @Get('current donor')
-    @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
-    getProfile(@currentDonor() donor: Donor){
-        return donor;
-    }
+  @Get('current donor')
+  @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
+  getProfile(@currentDonor() donor: Donor) {
+    return donor;
+  }
 
-    @Get('email')
-    @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
-    getEmail(@currentDonor('email') email: string){
-        return {email};
-    }
+  @Get('email')
+  @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
+  getEmail(@currentDonor('email') email: string) {
+    return { email };
+  }
 
-    @Get('donor/:id')
-    @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
-    async getDonorById(@Param('id') id: number){
-        return await this.authService.findDonorById(id);
-    }
+  @Get('donor/:id')
+  @Roles(Role.ADMIN, Role.DONOR, Role.PATIENT)
+  async getDonorById(@Param('id') id: number) {
+    return await this.authService.findDonorById(id);
+  }
 }

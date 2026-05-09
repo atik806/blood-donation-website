@@ -16,7 +16,10 @@ export class AuthService {
     console.log('Input password:', createDonorDto.password);
     const hashedPassword = await bcrypt.hash(createDonorDto.password, 10);
     console.log('Hashed password:', hashedPassword);
-    return await this.donorService.createDonorWithPassword(createDonorDto, hashedPassword);
+    return await this.donorService.createDonorWithPassword(
+      createDonorDto,
+      hashedPassword,
+    );
   }
 
   public async loginDonor(loginDto: LoginDto) {
@@ -48,4 +51,10 @@ export class AuthService {
   public async findDonorById(id: number) {
     return await this.donorService.getDonorById(id);
   }
+
+  //admin login
+
+  
+
+ 
 }

@@ -1,22 +1,19 @@
-
 import { SecretOrKeyProvider, JwtFromRequestFunction } from 'passport-jwt';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-@Injectable ()
+@Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor() {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: 'blood donation secret',
+    });
+  }
 
-    constructor() {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: 'blood donation secret',
-        });
-    }
-
-    async validate(payload:any){
-        return { id: payload.sub, email: payload.email, roles: payload.role };
-    }
-
+  async validate(payload: any) {
+    return { id: payload.sub, email: payload.email, roles: payload.role };
+  }
 }

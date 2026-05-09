@@ -1,13 +1,12 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const currentDonor = createParamDecorator(
-    (data: string | undefined, ctx: ExecutionContext) => {
-        const request = ctx.switchToHttp().getRequest();
-        const user = request.user;
-        if(data){
-            return user?.[data];
-        }
-        return user;
-    },
-
+  (data: string | undefined, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const user = request.user;
+    if (data) {
+      return user?.[data];
+    }
+    return user;
+  },
 );

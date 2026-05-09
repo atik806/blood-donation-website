@@ -4,12 +4,10 @@ import { DonorService } from './donor.service';
 import { Donor } from './donor.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
 @Module({
   controllers: [DonorController],
   providers: [DonorService],
   imports: [TypeOrmModule.forFeature([Donor])],
   exports: [DonorService],
-  
 })
 export class DonorModule {}

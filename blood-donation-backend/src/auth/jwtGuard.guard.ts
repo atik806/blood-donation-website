@@ -30,6 +30,5 @@ export class JwtGuard extends AuthGuard('jwt') {
       throw new UnauthorizedException('Invalid token');
     }
     return donor;
-
   }
 }

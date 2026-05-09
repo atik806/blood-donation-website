@@ -7,7 +7,7 @@ import { PatientModule } from './patient/patient.module';
 import { AdminModule } from './admin/admin.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donor } from './donor/donor.entity';
-
+import { Admin } from 'typeorm';
 
 @Module({
   imports: [
@@ -18,11 +18,15 @@ import { Donor } from './donor/donor.entity';
       username: 'postgres',
       password: '28444556',
       database: 'blood_donation',
-      entities: [Donor],
+      entities: [Donor,Admin],
       synchronize: true,
     }),
 
-    AuthModule, DonorModule, PatientModule, AdminModule],
+    AuthModule,
+    DonorModule,
+    PatientModule,
+    AdminModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

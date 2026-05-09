@@ -1,4 +1,52 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Admin } from './admin.entity';
+import { Donor } from 'src/donor/donor.entity';
+import { Repository } from 'typeorm';
+import { CreateAdminDto } from './admin.dto';
 
 @Injectable()
-export class AdminService {}
+export class AdminService {
+  constructor(
+    @InjectRepository(Admin)
+    private adminRepository: Repository<Admin>,
+
+    @InjectRepository(Donor)
+    private donorRepository: Repository<Donor>,
+  ) {}
+
+  //create the admin
+
+  async create(adminDto: CreateAdminDto) {
+    const admin = this.adminRepository.create(adminDto);
+    return await this.adminRepository.save(admin);
+  }
+
+  //get all the donors
+
+  public async getAllDonors() {
+    return await this.donorRepository.find();
+  }
+
+  public async getDonorById(id: number) {
+    return await this.donorRepository.findOne({
+      where: { id },
+    });
+  }
+
+  public async getDonorByEmail(email: string) {
+    return await this.donorRepository.findOne({
+      where: { email },
+    });
+  }
+
+  public async updateDonor(id: number, updateData: Partial<Donor>) {
+    await this.donorRepository.update(id, updateData);
+    return this.getDonorById(id);
+  }
+
+  public async deleteDonor(id: number) {
+    await this.donorRepository.delete(id);
+    return { message: 'Donor deleted successfully' };
+  }
+}

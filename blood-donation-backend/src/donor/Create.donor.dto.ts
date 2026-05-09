@@ -1,11 +1,10 @@
 import {
-     IsBoolean,
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
-}
-from 'class-validator';
+} from 'class-validator';
 
 export class CreateDonorDto {
   @IsNotEmpty()
