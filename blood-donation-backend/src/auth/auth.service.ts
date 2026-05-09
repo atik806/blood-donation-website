@@ -5,6 +5,7 @@ import {
 
 import { DonorService } from '../donor/donor.service';
 import { AdminService } from 'src/admin/admin.service';
+import { PatientService } from 'src/patient/patient.service';
 
 import { CreateDonorDto } from 'src/donor/Create.donor.dto';
 import { LoginDto } from './login.dto';
@@ -17,6 +18,7 @@ export class AuthService {
   constructor(
     private readonly donorService: DonorService,
     private readonly adminService: AdminService,
+    private readonly patientService: PatientService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -136,6 +138,46 @@ export class AuthService {
 
     return {
       message: 'Admin login success',
+      access_token: this.jwtService.sign(
+        payload,
+      ),
+    };
+  }
+
+
+  public async loginPatient(
+    loginDto: LoginDto,
+  ) {
+    const patient =
+      await this.patientService.getPatientByEmail(
+        loginDto.email,
+      );
+
+    if (!patient) {
+      throw new BadRequestException(
+        'Invalid email or password',
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      patient.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new BadRequestException(
+        'Invalid email or password',
+      );
+    }
+
+    const payload = {
+      id: patient.id,
+      email: patient.email,
+      role: 'patient',
+    };
+
+    return {
+      message: 'Patient login successful',
       access_token: this.jwtService.sign(
         payload,
       ),

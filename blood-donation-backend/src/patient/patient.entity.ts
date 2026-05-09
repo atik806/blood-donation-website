@@ -34,4 +34,11 @@ export class Patient{
     @Column({ type: 'varchar', default: 'normal' })
     urgency: string;
 
+    @Column({
+        default: 'patient',
+
+     })
+    roles: string;
+
+
 }
