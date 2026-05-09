@@ -10,28 +10,28 @@ export class Patient{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column
+    @Column({ type: 'varchar' })
     name: string;
 
-    @Column({unique:true})
+    @Column({ type: 'varchar', unique: true })
     email: string;
 
-    @Column
+    @Column({ type: 'varchar' })
     password: string;
 
-    @Column
+    @Column({ type: 'varchar' })
     bloodGroupNeeded: string;
 
-    @Column
-    phone: number;
+    @Column({ type: 'varchar' })
+    phone: string;
 
-    @Column
+    @Column({ type: 'varchar' })
     address: string;
 
-    @Column
+    @Column({ type: 'varchar' })
     hospital: string;
 
-    @Column({default: 'normal'})
+    @Column({ type: 'varchar', default: 'normal' })
     urgency: string;
 
 }

@@ -16,11 +16,11 @@ export class CreatePatientDto{
 
     @IsNotEmpty()
     @IsString()
-    bloodGGroupNeeded: string;
+    bloodGroupNeeded: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    phone: number;
+    @IsString()
+    phone: string;
 
     @IsNotEmpty()
     @IsString()
