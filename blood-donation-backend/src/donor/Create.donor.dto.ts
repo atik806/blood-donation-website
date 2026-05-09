@@ -33,4 +33,12 @@ export class CreateDonorDto {
   @IsOptional()
   @IsBoolean()
   available: boolean;
+
+  @IsOptional()
+  @IsString()
+  gender: string;
+
+  @IsOptional()
+  @IsString()
+  role: string;
 }
