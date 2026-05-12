@@ -43,40 +43,45 @@ export class AuthService {
   public async loginDonor(
     loginDto: LoginDto,
   ) {
-    const donor =
-      await this.donorService.getDonorByEmail(
-        loginDto.email,
+    try {
+      const donor =
+        await this.donorService.getDonorByEmail(
+          loginDto.email,
+        );
+
+      if (!donor) {
+        throw new BadRequestException(
+          'Invalid email or password',
+        );
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        loginDto.password,
+        donor.password,
       );
 
-    if (!donor) {
-      throw new BadRequestException(
-        'Invalid email or password',
-      );
+      if (!isPasswordValid) {
+        throw new BadRequestException(
+          'Invalid email or password',
+        );
+      }
+
+      const payload = {
+        id: donor.id,
+        email: donor.email,
+        role: 'donor',
+      };
+
+      return {
+        role: 'donor',
+        access_token: this.jwtService.sign(
+          payload,
+        ),
+      };
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
     }
-
-    const isPasswordValid = await bcrypt.compare(
-      loginDto.password,
-      donor.password,
-    );
-
-    if (!isPasswordValid) {
-      throw new BadRequestException(
-        'Invalid email or password',
-      );
-    }
-
-    const payload = {
-      id: donor.id,
-      email: donor.email,
-      role: 'donor',
-    };
-
-    return {
-      role: 'donor',
-      access_token: this.jwtService.sign(
-        payload,
-      ),
-    };
   }
 
 
