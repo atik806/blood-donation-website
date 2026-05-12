@@ -20,22 +20,34 @@ enum Role {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post('donor/register')
   @Public()
-  async register(@Body() CreateDonorDto: CreateDonorDto) {
-    return await this.authService.registerDonor(CreateDonorDto);
+  async registerDonor(@Body() createDonorDto: CreateDonorDto) {
+    return await this.authService.registerDonor(createDonorDto);
   }
 
-  @Post('login')
+  @Post('donor/login')
   @Public()
-  async login(@Body() LoginDto) {
-    return await this.authService.loginDonor(LoginDto);
+  async loginDonor(@Body() loginDto: LoginDto) {
+    return await this.authService.loginDonor(loginDto);
   }
 
   @Post('patient/login')
   @Public()
   async loginPatient(@Body() loginDto: LoginDto) {
     return await this.authService.loginPatient(loginDto);
+  }
+
+  @Post('admin/login')
+  @Public()
+  loginAdmin(@Body() loginDto: LoginDto){
+    return this.authService.loginAdmin(loginDto);
+  }
+
+  @Post('admin/register')
+  @Public()
+  registerAdmin(@Body() body: any) {
+    return this.authService.registerAdmin(body);
   }
 
   @UseGuards(JwtGuard, RolesGuard)
@@ -65,16 +77,4 @@ export class AuthController {
   async getDonorById(@Param('id') id: number) {
     return await this.authService.findDonorById(id);
   }
-
-
-  @Post('admin/login')
-  loginAdmin(@Body() loginDto:LoginDto){
-    return this.authService.loginAdmin(loginDto);
-  }
-  @Post('admin/register')
-  registerAdmin(@Body() body: any) {
-    return this.authService.registerAdmin(body);
-  }
-
-
 }

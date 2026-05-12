@@ -72,7 +72,7 @@ export class AuthService {
     };
 
     return {
-      message: 'Donor login successful',
+      role: 'donor',
       access_token: this.jwtService.sign(
         payload,
       ),
@@ -137,7 +137,7 @@ export class AuthService {
     };
 
     return {
-      message: 'Admin login success',
+      role: 'admin',
       access_token: this.jwtService.sign(
         payload,
       ),
@@ -177,7 +177,7 @@ export class AuthService {
     };
 
     return {
-      message: 'Patient login successful',
+      role: 'patient',
       access_token: this.jwtService.sign(
         payload,
       ),
