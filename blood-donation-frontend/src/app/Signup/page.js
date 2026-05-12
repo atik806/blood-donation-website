@@ -28,23 +28,46 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.role) {
+      alert("Please select a role");
+      return;
+    }
+
+    let endpoint = "";
+    let payload = formData;
+
+    if (formData.role === "Donor") {
+      endpoint = "http://localhost:3000/auth/donor/register";
+    } else if (formData.role === "Patient") {
+      endpoint = "http://localhost:3000/patient";
+      payload = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        bloodGroupNeeded: formData.bloodGroup,
+        phone: formData.phone,
+        address: formData.address,
+        hospital: "",
+        urgency: "normal",
+      };
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/donor", {
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
       if (response.ok) {
         alert("Registration successful");
         console.log(data);
-        window.location.reload();
+        window.location.href = "/Login";
       } else {
         alert(data.message || "Registration Failed..");
-        window.location.reload();
       }
     } catch (error) {
       console.error("Registration error:", error);
@@ -61,7 +84,7 @@ export default function Signup() {
             Join as a donor and help save lives
           </p>
 
-          <form className="form" onSubmit={handleSubmit}>
+          <form className="form" onSubmit={handleSubmit} required>
             <input
               type="text"
               name="name"
@@ -69,6 +92,7 @@ export default function Signup() {
               className="input"
               value={formData.name}
               onChange={handleChange}
+              required
             />
             <input
               type="email"
@@ -77,11 +101,13 @@ export default function Signup() {
               className="input"
               value={formData.email}
               onChange={handleChange}
+              required
             />
 
             <select
               name="bloodGroup"
               className="input"
+              required
               value={formData.bloodGroup}
               onChange={handleChange}
             >
@@ -96,7 +122,7 @@ export default function Signup() {
               <option value="AB-">AB-</option>
             </select>
 
-            <div className="radioGroup">
+            <div className="radioGroup" required>
               <label>
                 <input
                   type="radio"
@@ -130,7 +156,7 @@ export default function Signup() {
             </div>
 
             <select
-              name="role"
+              name="role" required
               className="input"
               value={formData.role}
               onChange={handleChange}
@@ -147,6 +173,7 @@ export default function Signup() {
               className="input"
               value={formData.phone}
               onChange={handleChange}
+              required
             />
 
             <input
@@ -156,6 +183,7 @@ export default function Signup() {
               className="input"
               value={formData.address}
               onChange={handleChange}
+              required
             />
 
             <input
@@ -165,6 +193,7 @@ export default function Signup() {
               className="input"
               value={formData.password}
               onChange={handleChange}
+              required
             />
 
             <button type="submit" className="button">
