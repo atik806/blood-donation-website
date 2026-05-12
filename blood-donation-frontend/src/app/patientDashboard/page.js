@@ -1,6 +1,23 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import "./style.css";
 
 export default function PatientDashboard() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (!token) {
+      router.push("/Login");
+    } else if (role !== "patient") {
+      router.push("/Login");
+    }
+  }, [router]);
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
