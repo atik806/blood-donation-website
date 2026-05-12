@@ -29,6 +29,7 @@ export class AuthController {
   @Post('donor/login')
   @Public()
   async loginDonor(@Body() loginDto: LoginDto) {
+    console.log('Login endpoint called with:', loginDto);
     return await this.authService.loginDonor(loginDto);
   }
 
