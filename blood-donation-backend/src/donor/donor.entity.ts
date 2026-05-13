@@ -28,4 +28,10 @@ export class Donor {
 
   @Column({ default: 'donor' })
   roles: string;
+
+  @Column({ nullable: true })
+  lastDonationDate: string;
+
+@Column({ default: 0 })
+totalDonations: number;
 }

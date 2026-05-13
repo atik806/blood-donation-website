@@ -6,7 +6,7 @@ import { JwtGuard } from 'src/auth/jwtGuard.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { Public } from 'src/auth/public.decorator';
-
+import { Req } from '@nestjs/common';
 enum Role {
   ADMIN = 'admin',
   DONOR = 'donor',
@@ -29,6 +29,14 @@ export class DonorController {
     return this.donorService.getAllDonors();
   }
 
+  @Get('profile')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.DONOR)
+  getProfile(@Req() req) {
+    console.log('User in profile:', req.user);
+    return this.donorService.getDonorById(req.user.id);
+  }
+
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.DONOR)
   @Get(':id')
@@ -49,4 +57,6 @@ export class DonorController {
   deleteDonor(@Param('id') id: string) {
     return this.donorService.deleteDonor(+id);
   }
+
+
 }
