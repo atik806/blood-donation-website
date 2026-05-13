@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./style.css";
 
@@ -18,11 +18,51 @@ export default function DonorDashboard() {
     }
   }, [router]);
 
+const [donorData, setDonorData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDonor = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          "http://localhost:3000/donor/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          console.error("Failed to fetch:", response.status);
+          setLoading(false);
+          return;
+        }
+        const data = await response.json();
+        console.log("Donor data:", data);
+        setDonorData(data);
+      } catch (error) {
+        console.log("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDonor();
+  }, []);
+
+  if (loading) {
+    return <div className="p-8">Loading...</div>;
+  }
+
+  if (!donorData) {
+    return <div className="p-8">Unable to load donor data</div>;
+  }
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Donor Dashboard</h1>
-        <p>Welcome back, Atik! Here's your donation overview.</p>
+        <p>Welcome back, {donorData?.name || "Donor"}! Here&apos;s your donation overview.</p>
       </div>
 
       <div className="info-grid">
@@ -30,19 +70,19 @@ export default function DonorDashboard() {
           <h2>Donor Information</h2>
           <div className="info-item">
             <span className="label">Name</span>
-            <span className="value">Atik</span>
+            <span className="value">{donorData?.name || "Loading..."}</span>
           </div>
           <div className="info-item">
             <span className="label">Email</span>
-            <span className="value">atik@gmail.com</span>
+            <span className="value">{donorData?.email || "Loading..."}</span>
           </div>
           <div className="info-item">
             <span className="label">Blood Group</span>
-            <span className="value blood-type">A+</span>
+            <span className="value blood-type">{donorData?.bloodGroup || "N/A"}</span>
           </div>
           <div className="info-item">
             <span className="label">Status</span>
-            <span className="status-badge">Available</span>
+            <span className="status-badge">{donorData?.available ? "Available" : "Unavailable"}</span>
           </div>
         </div>
 
@@ -50,11 +90,11 @@ export default function DonorDashboard() {
           <h2>Donation Status</h2>
           <div className="info-item">
             <span className="label">Last Donation</span>
-            <span className="value">10 May 2026</span>
+            <span className="value">{donorData?.lastDonationDate || "N/A"}</span>
           </div>
           <div className="info-item">
             <span className="label">Total Donations</span>
-            <span className="value">5</span>
+            <span className="value">{donorData?.totalDonations || 0}</span>
           </div>
         </div>
       </div>
