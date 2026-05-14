@@ -7,7 +7,9 @@ export default function NavWrapper({ children }) {
   const pathname = usePathname();
   const showNav = !pathname.startsWith("/donorDashboard") && 
                   !pathname.startsWith("/patientDashboard") && 
-                  !pathname.startsWith("/AdminDashboard");
+                  !pathname.startsWith("/AdminDashboard")&&
+                  !pathname.startsWith("/UpdateProfile");
+                  
 
   return (
     <>

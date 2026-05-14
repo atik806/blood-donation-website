@@ -103,7 +103,7 @@ const [donorData, setDonorData] = useState(null);
         <div className="section-card">
           <h2>Quick Actions</h2>
           <div className="action-buttons">
-            <button className="action-btn">Update Profile</button>
+            <button className="action-btn" onClick={() => router.push("/UpdateProfile")}>Update Profile</button>
             <button className="action-btn">Update Availability</button>
             <button className="action-btn">View Donation History</button>
             <button className="action-btn">View Blood Requests</button>
