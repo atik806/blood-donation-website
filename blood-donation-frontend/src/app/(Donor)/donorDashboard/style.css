@@ -6,7 +6,9 @@
 }
 
 .dashboard-header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 2rem;
 }
 
@@ -20,6 +22,22 @@
 .dashboard-header p {
   color: #666;
   font-size: 1rem;
+}
+
+.logout-btn {
+  padding: 0.5rem 1.25rem;
+  background: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background: #e74c3c;
 }
 
 .info-grid {

@@ -50,6 +50,12 @@ const [donorData, setDonorData] = useState(null);
     fetchDonor();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    router.push("/Login");
+  };
+
   if (loading) {
     return <div className="p-8">Loading...</div>;
   }
@@ -61,8 +67,11 @@ const [donorData, setDonorData] = useState(null);
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Donor Dashboard</h1>
-        <p>Welcome back, {donorData?.name || "Donor"}! Here&apos;s your donation overview.</p>
+        <div>
+          <h1>Donor Dashboard</h1>
+          <p>Welcome back, {donorData?.name || "Donor"}! Here&apos;s your donation overview.</p>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
 
       <div className="info-grid">
