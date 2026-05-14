@@ -1,98 +1,224 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Blood Donation Management System - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+NestJS REST API backend for the Blood Donation Management System. Provides authentication, donor/patient management, admin controls, and blood request handling.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
 
-## Description
+- **Framework:** NestJS 11
+- **Language:** TypeScript
+- **ORM:** TypeORM 0.3
+- **Database:** PostgreSQL
+- **Auth:** JWT + Passport + bcrypt
+- **Validation:** class-validator + class-transformer
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Project Structure
 
-## Project setup
-
-```bash
-$ npm install
+```
+src/
+├── auth/              # Authentication module
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   ├── auth.module.ts
+│   ├── jwt.strategy.ts       # Passport JWT strategy
+│   ├── jwtGuard.guard.ts     # JWT guard (checks token)
+│   ├── roles.guard.ts        # Role-based access guard
+│   ├── login.dto.ts
+│   ├── current-donor-decorator.ts
+│   ├── public.decorator.ts
+│   └── roles.decorator.ts
+├── donor/             # Donor CRUD
+│   ├── donor.controller.ts
+│   ├── donor.service.ts
+│   ├── donor.entity.ts
+│   └── Create.donor.dto.ts
+├── patient/           # Patient CRUD
+│   ├── patient.controller.ts
+│   ├── patient.service.ts
+│   ├── patient.entity.ts
+│   └── create-patient-dto.ts
+├── admin/             # Admin management
+│   ├── admin.controller.ts
+│   ├── admin.service.ts
+│   ├── admin.entity.ts
+│   └── admin.dto.ts
+├── blood-request/     # Blood request management
+│   ├── blood-request.controller.ts
+│   ├── blood-request.service.ts
+│   ├── blood-request.entity.ts
+│   └── create-blood-request.dto.ts
+├── app.module.ts      # Root module
+├── app.controller.ts
+├── app.service.ts
+└── main.ts            # Entry point (port 3000)
 ```
 
-## Compile and run the project
+## Setup
+
+### Prerequisites
+
+- Node.js v18+
+- PostgreSQL running on `localhost:5432`
+- npm
+
+### Installation
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### Database
+
+Create a PostgreSQL database:
+
+```sql
+CREATE DATABASE blood_donation;
+```
+
+Configure credentials in `.env` (see `.env.example`):
+
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=blood_donation
+JWT_SECRET=your_jwt_secret
+```
+
+> **Note:** `synchronize: true` is enabled in `app.module.ts`, so tables are auto-created on startup.
+
+### Running
 
 ```bash
-# unit tests
-$ npm run test
+# development (watch mode)
+npm run start:dev
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# production
+npm run build && npm run start:prod
 ```
 
-## Deployment
+The API runs on `http://localhost:3000` by default.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## API Endpoints
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Authentication (`/auth`)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/auth/donor/register` | Public | Register new donor |
+| POST | `/auth/donor/login` | Public | Donor login |
+| POST | `/auth/patient/login` | Public | Patient login |
+| POST | `/auth/admin/login` | Public | Admin login |
+| POST | `/auth/admin/register` | Public | Register new admin |
+
+### Donors (`/donor`)
+
+| Method | Endpoint | Auth | Role | Description |
+|--------|----------|------|------|-------------|
+| POST | `/donor` | Public | - | Create donor |
+| GET | `/donor` | JWT | Admin | List all donors |
+| GET | `/donor/profile` | JWT | Donor | Get own profile |
+| GET | `/donor/:id` | JWT | Admin/Donor | Get donor by ID |
+| PATCH | `/donor/:id` | JWT | Donor | Update donor |
+| DELETE | `/donor/:id` | JWT | Admin | Delete donor |
+
+### Patients (`/patient`)
+
+| Method | Endpoint | Auth | Role | Description |
+|--------|----------|------|------|-------------|
+| POST | `/patient` | Public | - | Register patient |
+| GET | `/patient` | JWT | Admin | List all patients |
+| GET | `/patient/:id` | JWT | Admin/Patient | Get patient by ID |
+| PATCH | `/patient/:id` | JWT | Patient | Update patient |
+| DELETE | `/patient/:id` | JWT | Admin | Delete patient |
+
+### Blood Requests (`/blood-requests`)
+
+| Method | Endpoint | Auth | Role | Description |
+|--------|----------|------|------|-------------|
+| POST | `/blood-requests` | Public | - | Create request |
+| GET | `/blood-requests` | JWT | Admin | List all requests |
+| GET | `/blood-requests/:id` | JWT | Admin/Patient | Get by ID |
+| GET | `/blood-requests/patient/:patientId` | JWT | Admin/Patient | Get by patient |
+| PATCH | `/blood-requests/:id/status` | JWT | Admin | Update status |
+| DELETE | `/blood-requests/:id` | JWT | Admin | Delete request |
+
+### Admin Management (`/admin`)
+
+| Method | Endpoint | Auth | Role | Description |
+|--------|----------|------|------|-------------|
+| POST | `/admin` | Public | - | Create admin |
+| GET | `/admin/donors` | JWT | Admin | List all donors |
+| GET | `/admin/donors/:id` | JWT | Admin | Get donor by ID |
+| PATCH | `/admin/donors/:id` | JWT | Admin | Update donor |
+| DELETE | `/admin/donors/:id` | JWT | Admin | Delete donor |
+
+## Entities
+
+### Donor
+| Field | Type | Notes |
+|-------|------|-------|
+| id | number | Primary key |
+| name | string | |
+| email | string | Unique |
+| password | string | bcrypt hashed |
+| bloodGroup | string | |
+| phone | string | Nullable |
+| address | string | Nullable |
+| available | boolean | Default: true |
+| roles | string | Default: "donor" |
+| lastDonationDate | string | Nullable |
+| totalDonations | number | Default: 0 |
+
+### Patient
+| Field | Type | Notes |
+|-------|------|-------|
+| id | number | Primary key |
+| name | string | |
+| email | string | Unique |
+| password | string | bcrypt hashed |
+| bloodGroupNeeded | string | |
+| phone | string | |
+| address | string | |
+| hospital | string | |
+| urgency | string | Default: "normal" |
+| roles | string | Default: "patient" |
+
+### Admin
+| Field | Type | Notes |
+|-------|------|-------|
+| id | number | Primary key |
+| name | string | |
+| email | string | |
+| password | string | bcrypt hashed |
+| roles | string | Default: "admin" |
+
+### BloodRequest
+| Field | Type | Notes |
+|-------|------|-------|
+| id | number | Primary key |
+| patient | relation | Many-to-One with Patient |
+| patientId | number | Foreign key |
+| bloodGroup | string | |
+| units | number | Default: 1 |
+| hospital | string | |
+| urgency | string | "normal" / "emergency" |
+| status | string | "pending" / "fulfilled" / "cancelled" |
+| createdAt | timestamp | Auto-generated |
+| updatedAt | timestamp | Auto-updated |
+
+## Scripts
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run build        # Compile TypeScript
+npm run start        # Start server
+npm run start:dev    # Start with watch mode
+npm run start:prod   # Start compiled production build
+npm run test         # Run unit tests
+npm run test:e2e     # Run e2e tests
+npm run lint         # Lint source files
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Frontend
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+The frontend Next.js application is available at `../blood-donation-frontend/`. The frontend runs on port 4000 and expects this API on port 3000.

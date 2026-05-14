@@ -5,6 +5,7 @@ import { JwtGuard } from 'src/auth/jwtGuard.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { Public } from 'src/auth/public.decorator';
+import * as bcrypt from 'bcryptjs';
 
 enum Role {
   ADMIN = 'admin',
@@ -19,13 +20,15 @@ export class PatientController {
 
     @Post()
     @Public()
-    createPatient(
+    async createPatient(
     @Body()
     createPatientDto: CreatePatientDto,
     ) 
     {
-    return this.patientService.createPatient(
+    const hashedPassword = await bcrypt.hash(createPatientDto.password, 10);
+    return this.patientService.createPatientWithPassword(
       createPatientDto,
+      hashedPassword,
     );
   }
 
