@@ -16,6 +16,8 @@ export default function Signup() {
     phone: "",
     address: "",
     available: true,
+    hospital: "",
+    urgency: "normal",
   });
 
   const handleChange = (e) => {
@@ -47,8 +49,8 @@ export default function Signup() {
         bloodGroupNeeded: formData.bloodGroup,
         phone: formData.phone,
         address: formData.address,
-        hospital: "",
-        urgency: "normal",
+        hospital: formData.hospital,
+        urgency: formData.urgency,
       };
     }
 
@@ -165,6 +167,30 @@ export default function Signup() {
               <option value="Donor">Donor</option>
               <option value="Patient">Patient</option>
             </select>
+
+            {formData.role === "Patient" && (
+              <>
+                <input
+                  type="text"
+                  name="hospital"
+                  placeholder="Hospital Name"
+                  className="input"
+                  value={formData.hospital}
+                  onChange={handleChange}
+                  required
+                />
+                <select
+                  name="urgency"
+                  className="input"
+                  value={formData.urgency}
+                  onChange={handleChange}
+                >
+                  <option value="normal">Normal</option>
+                  <option value="urgent">Urgent</option>
+                  <option value="emergency">Emergency</option>
+                </select>
+              </>
+            )}
 
             <input
               type="text"

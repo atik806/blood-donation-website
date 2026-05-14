@@ -34,6 +34,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   transition: background 0.2s;
+  width: auto;
 }
 
 .logout-btn:hover {
