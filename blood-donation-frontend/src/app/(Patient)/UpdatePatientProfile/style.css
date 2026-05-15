@@ -1,0 +1,96 @@
+/* style.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+.profile-container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 40px;
+}
+
+.profile-card {
+  width: 450px;
+  margin: auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  color: darkred;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: darkred;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: red;
+}
+
+.back-btn {
+  margin-left: 20px;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: black;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 15px;
+  color: black;
+  background-color: white;
+}
+input::placeholder {
+  color: gray;
+}
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: black;
+}
+

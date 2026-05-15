@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./style.css";
 
@@ -18,11 +18,58 @@ export default function PatientDashboard() {
     }
   }, [router]);
 
+  const [patientData, setPatientData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const res = await fetch(`http://localhost:3000/patient/${payload.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
+        setPatientData(data);
+      } catch (error) {
+        console.error("Error fetching patient:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPatient();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    router.push("/Login");
+  };
+
+  if (loading) {
+    return <div className="p-8">Loading...</div>;
+  }
+
+  if (!patientData) {
+    return <div className="p-8">Unable to load patient data</div>;
+  }
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Patient Dashboard</h1>
-        <p>Welcome back! Here's your blood request overview.</p>
+        <div>
+          <h1>Patient Dashboard</h1>
+          <p>Welcome back, {patientData?.name || "Patient"}! Here&apos;s your blood request overview.</p>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
 
       <div className="info-grid">
@@ -30,35 +77,35 @@ export default function PatientDashboard() {
           <h2>Patient Information</h2>
           <div className="info-item">
             <span className="label">Name</span>
-            <span className="value">John Doe</span>
+            <span className="value">{patientData?.name || "Loading..."}</span>
           </div>
           <div className="info-item">
             <span className="label">Email</span>
-            <span className="value">john@example.com</span>
+            <span className="value">{patientData?.email || "Loading..."}</span>
           </div>
           <div className="info-item">
             <span className="label">Blood Group Required</span>
-            <span className="value blood-type">B+</span>
+            <span className="value blood-type">{patientData?.bloodGroupNeeded || "N/A"}</span>
           </div>
           <div className="info-item">
-            <span className="label">Status</span>
-            <span className="status-badge">Active</span>
+            <span className="label">Urgency</span>
+            <span className="status-badge">{patientData?.urgency || "Active"}</span>
           </div>
         </div>
 
         <div className="info-card">
           <h2>Request Status</h2>
           <div className="info-item">
-            <span className="label">Total Requests</span>
-            <span className="value">3</span>
+            <span className="label">Hospital</span>
+            <span className="value">{patientData?.hospital || "N/A"}</span>
           </div>
           <div className="info-item">
-            <span className="label">Pending</span>
-            <span className="value pending">1</span>
+            <span className="label">Phone</span>
+            <span className="value">{patientData?.phone || "N/A"}</span>
           </div>
           <div className="info-item">
-            <span className="label">Fulfilled</span>
-            <span className="value fulfilled">2</span>
+            <span className="label">Address</span>
+            <span className="value">{patientData?.address || "N/A"}</span>
           </div>
         </div>
       </div>
@@ -67,7 +114,7 @@ export default function PatientDashboard() {
         <div className="section-card">
           <h2>Quick Actions</h2>
           <div className="action-buttons">
-            <button className="action-btn">Update Profile</button>
+            <button className="action-btn" onClick={() => router.push("/UpdatePatientProfile")}>Update Profile</button>
             <button className="action-btn">New Blood Request</button>
             <button className="action-btn">View Request History</button>
             <button className="action-btn">Contact Donors</button>
@@ -77,9 +124,7 @@ export default function PatientDashboard() {
         <div className="section-card">
           <h2>Recent Requests</h2>
           <ul className="request-list">
-            <li>B+ blood request - Pending</li>
-            <li>A- blood request - Fulfilled</li>
-            <li>O+ blood request - Fulfilled</li>
+            <li>{patientData?.bloodGroupNeeded || "Blood"} request - {patientData?.urgency || "Pending"}</li>
           </ul>
         </div>
       </div>
