@@ -9,6 +9,7 @@ export default function NavWrapper({ children }) {
                   !pathname.startsWith("/patientDashboard") && 
                   !pathname.startsWith("/AdminDashboard")&&
                   !pathname.startsWith("/UpdateAvailability")&&
+                  !pathname.startsWith("/newBloodRequest")&&
                   !pathname.startsWith("/UpdateProfile");
                   
 
