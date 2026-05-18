@@ -13,6 +13,7 @@ export default function NavWrapper({ children }) {
     !pathname.startsWith("/ThankYouDonor") &&
     !pathname.startsWith("/viewRequestHistory") &&
     !pathname.startsWith("/ContactDonor") &&
+    !pathname.startsWith("/ManageDonors") &&
     !pathname.startsWith("/UpdateProfile");
 
 

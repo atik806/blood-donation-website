@@ -44,7 +44,7 @@ export class DonorController {
   }
 
   @UseGuards(JwtGuard, RolesGuard)
-  @Roles(Role.DONOR)
+  @Roles(Role.ADMIN, Role.DONOR)
   @Patch(':id')
   updateDonor(@Param('id') id: string, @Body() updateData: any) {
     return this.donorService.updateDonor(+id, updateData);
