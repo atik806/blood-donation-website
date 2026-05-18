@@ -110,7 +110,7 @@ export default function AdminDashboard() {
           <ul className="action-list">
             <li onClick={() => router.push("/ManageDonors")}>Manage Donors</li>
             <li onClick={() => router.push("/ManagePatients")}>Manage Patients</li>
-            <li>View Blood Requests</li>
+            <li onClick={() => router.push("/AllBloodRequest")}>All Blood Requests Information</li>
             <li>View Admin Profile</li>
           </ul>
         </div>
