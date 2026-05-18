@@ -18,7 +18,8 @@ export default function DonorDashboard() {
     }
   }, [router]);
 
-const [donorData, setDonorData] = useState(null);
+  const [donorData, setDonorData] = useState(null);
+  const [bloodRequests, setBloodRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,6 +56,32 @@ const [donorData, setDonorData] = useState(null);
     };
     fetchDonor();
   }, [router]);
+
+  useEffect(() => {
+    const fetchAcceptedRequests = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const response = await fetch(
+          `http://localhost:3000/blood-request/donor/${payload.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setBloodRequests(data);
+        }
+      } catch (error) {
+        console.log("Error fetching accepted requests:", error);
+      }
+    };
+    fetchAcceptedRequests();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -99,10 +126,6 @@ const [donorData, setDonorData] = useState(null);
             <span className="label">Status</span>
             <span className="status-badge">{donorData?.available ? "Available" : "Unavailable"}</span>
           </div>
-        </div>
-
-        <div className="info-card">
-          <h2>Donation Status</h2>
           <div className="info-item">
             <span className="label">Last Donation</span>
             <span className="value">{donorData?.lastDonationDate || "N/A"}</span>
@@ -115,22 +138,34 @@ const [donorData, setDonorData] = useState(null);
       </div>
 
       <div className="dashboard-sections">
-        <div className="section-card">
+        <div className="section-card quick-actions-card">
           <h2>Quick Actions</h2>
           <div className="action-buttons">
             <button className="action-btn" onClick={() => router.push("/UpdateProfile")}>Update Profile</button>
             <button className="action-btn" onClick={() => router.push("/UpdateAvailability")}>Update Availability</button>
-            <button className="action-btn" >View Donation History</button>
+            <button className="action-btn">View Donation History</button>
             <button className="action-btn" onClick={() => router.push("/viewBloodRequests")}>View Blood Requests</button>
           </div>
         </div>
 
-        <div className="section-card">
-          <h2>Recent Requests</h2>
+        <div className="section-card requests-card">
+          <h2>Your Accepted Requests ({bloodRequests.length})</h2>
           <ul className="request-list">
-            <li>Patient requested A+ blood</li>
-            <li>Donation request accepted</li>
-            <li>New emergency request received</li>
+            {bloodRequests.length > 0 ? (
+              bloodRequests.slice(0, 3).map((req) => (
+                <li key={req.id}>
+                  <div className="request-item">
+                    <div className="request-info">
+                      <span className="blood-group">{req.bloodGroup}</span>
+                      <span className="hospital">{req.hospital}</span>
+                    </div>
+                    <span className="request-status accepted">✓ Accepted</span>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <li>No accepted blood requests yet</li>
+            )}
           </ul>
         </div>
       </div>

@@ -104,8 +104,32 @@
 
 .dashboard-sections {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1.5fr;
   gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quick-actions-card {
+  grid-column: 1;
+}
+
+.requests-card {
+  grid-column: 2;
+}
+
+@media (max-width: 1024px) {
+  .quick-actions-card {
+    grid-column: 1;
+  }
+
+  .requests-card {
+    grid-column: 1;
+  }
 }
 
 .section-card {
@@ -153,10 +177,10 @@
 }
 
 .request-list li {
-  padding: 0.875rem 1rem;
-  margin-bottom: 0.5rem;
-  background: #9c4848;
-  color: white;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #f8f9fa;
+  border-left: 4px solid #c0392b;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -166,4 +190,43 @@
 .request-list li::before {
   content: "♥";
   color: #c0392b;
+  display: none;
+}
+
+.request-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.request-info .blood-group {
+  font-weight: 700;
+  color: #c0392b;
+  font-size: 1.1rem;
+}
+
+.request-info .hospital {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.request-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.request-status.accepted {
+  background: #d4edda;
+  color: #155724;
 }
