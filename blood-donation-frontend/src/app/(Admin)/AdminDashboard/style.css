@@ -8,6 +8,14 @@
 .dashboard-header {
   text-align: center;
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header div {
+  flex: 1;
+  text-align: center;
 }
 
 .dashboard-header h1 {
@@ -20,6 +28,24 @@
 .dashboard-header p {
   color: #666;
   font-size: 1rem;
+}
+
+.logout-btn {
+  background: linear-gradient(to right, #dc2626, #b91c1c);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
 .stats-grid {

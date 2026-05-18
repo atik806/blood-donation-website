@@ -25,7 +25,7 @@ export default function AdminDashboard() {
     }
   }, [router]);
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -67,11 +67,22 @@ export default function AdminDashboard() {
     fetchStats();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    router.push("/Login");
+  };
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <p>Welcome back! Here's your blood donation center overview.</p>
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>Welcome back! Here's your blood donation center overview.</p>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
 
       <div className="stats-grid">
@@ -98,7 +109,7 @@ export default function AdminDashboard() {
           <h2>Quick Actions</h2>
           <ul className="action-list">
             <li onClick={() => router.push("/ManageDonors")}>Manage Donors</li>
-            <li>Manage Patients</li>
+            <li onClick={() => router.push("/ManagePatients")}>Manage Patients</li>
             <li>View Blood Requests</li>
             <li>View Admin Profile</li>
           </ul>

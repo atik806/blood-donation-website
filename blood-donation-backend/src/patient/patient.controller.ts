@@ -31,8 +31,7 @@ export class PatientController {
         );
     }
 
-    @UseGuards(JwtGuard, RolesGuard)
-    @Roles(Role.ADMIN)
+    @Public()
     @Get()
     getAllPatients() {
         return this.patientService.getAllPatients();
@@ -49,8 +48,7 @@ export class PatientController {
         );
     }
 
-    @UseGuards(JwtGuard, RolesGuard)
-    @Roles(Role.PATIENT)
+    @Public()
     @Patch(':id')
     updatePatient(
         @Param('id') id: string,
@@ -62,8 +60,7 @@ export class PatientController {
         );
     }
 
-    @UseGuards(JwtGuard, RolesGuard)
-    @Roles(Role.ADMIN)
+    @Public()
     @Delete(':id')
     delatePatient(
         @Param('id') id: string,

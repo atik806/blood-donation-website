@@ -14,6 +14,7 @@ export default function NavWrapper({ children }) {
     !pathname.startsWith("/viewRequestHistory") &&
     !pathname.startsWith("/ContactDonor") &&
     !pathname.startsWith("/ManageDonors") &&
+    !pathname.startsWith("/ManagePatients") &&
     !pathname.startsWith("/UpdateProfile");
 
 
