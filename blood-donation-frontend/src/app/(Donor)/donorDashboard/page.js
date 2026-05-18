@@ -143,7 +143,7 @@ export default function DonorDashboard() {
           <div className="action-buttons">
             <button className="action-btn" onClick={() => router.push("/UpdateProfile")}>Update Profile</button>
             <button className="action-btn" onClick={() => router.push("/UpdateAvailability")}>Update Availability</button>
-            <button className="action-btn">View Donation History</button>
+            <button className="action-btn" onClick={() => router.push("/viewDonationHistory")}>View Donation History</button>
             <button className="action-btn" onClick={() => router.push("/viewBloodRequests")}>View Blood Requests</button>
           </div>
         </div>
@@ -164,7 +164,9 @@ export default function DonorDashboard() {
                 </li>
               ))
             ) : (
-              <li>No accepted blood requests yet</li>
+              <li style={{ color: "black" }}>
+                No accepted blood requests yet
+              </li>
             )}
           </ul>
         </div>
