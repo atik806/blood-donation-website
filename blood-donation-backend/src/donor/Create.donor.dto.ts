@@ -41,5 +41,12 @@ export class CreateDonorDto {
   @IsOptional()
   @IsString()
   role: string;
-  
+
+  @IsOptional()
+  @IsString()
+  hospital: string;
+
+  @IsOptional()
+  @IsString()
+  urgency: string;
 }

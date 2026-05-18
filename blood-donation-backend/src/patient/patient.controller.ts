@@ -8,34 +8,33 @@ import { Public } from 'src/auth/public.decorator';
 import * as bcrypt from 'bcryptjs';
 
 enum Role {
-  ADMIN = 'admin',
-  PATIENT = 'patient',
+    ADMIN = 'admin',
+    PATIENT = 'patient',
 }
 
 @Controller('patient')
 export class PatientController {
     constructor(
         private readonly patientService: PatientService,
-    ){}
+    ) { }
 
     @Post()
     @Public()
     async createPatient(
-    @Body()
-    createPatientDto: CreatePatientDto,
-    ) 
-    {
-    const hashedPassword = await bcrypt.hash(createPatientDto.password, 10);
-    return this.patientService.createPatientWithPassword(
-      createPatientDto,
-      hashedPassword,
-    );
-  }
+        @Body()
+        createPatientDto: CreatePatientDto,
+    ) {
+        const hashedPassword = await bcrypt.hash(createPatientDto.password, 10);
+        return this.patientService.createPatientWithPassword(
+            createPatientDto,
+            hashedPassword,
+        );
+    }
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Get()
-    getAllPatients(){
+    getAllPatients() {
         return this.patientService.getAllPatients();
     }
 
@@ -44,7 +43,7 @@ export class PatientController {
     @Get(':id')
     getPatientById(
         @Param('id') id: string,
-    ){
+    ) {
         return this.patientService.getPatientById(
             +id,
         );
@@ -54,9 +53,9 @@ export class PatientController {
     @Roles(Role.PATIENT)
     @Patch(':id')
     updatePatient(
-        @Param('id') id:string,
+        @Param('id') id: string,
         @Body() updateData: any,
-    ){
+    ) {
         return this.patientService.updatePatient(
             +id,
             updateData,
@@ -67,8 +66,8 @@ export class PatientController {
     @Roles(Role.ADMIN)
     @Delete(':id')
     delatePatient(
-        @Param('id') id:string,
-    ){
+        @Param('id') id: string,
+    ) {
         return this.patientService.deletePatient(
             +id,
         );

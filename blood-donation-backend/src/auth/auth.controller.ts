@@ -20,6 +20,12 @@ enum Role {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('register')
+  @Public()
+  async register(@Body() createDonorDto: CreateDonorDto) {
+    return await this.authService.registerDonor(createDonorDto);
+  }
+
   @Post('donor/register')
   @Public()
   async registerDonor(@Body() createDonorDto: CreateDonorDto) {

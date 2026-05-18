@@ -20,9 +20,7 @@ export class AuthService {
     private readonly adminService: AdminService,
     private readonly patientService: PatientService,
     private readonly jwtService: JwtService,
-  ) {}
-
-
+  ) { }
 
   public async registerDonor(
     createDonorDto: CreateDonorDto,
@@ -32,13 +30,29 @@ export class AuthService {
       10,
     );
 
+    const role = createDonorDto.role || 'donor';
+
+    if (role === 'patient') {
+      return await this.patientService.createPatientWithPassword(
+        {
+          name: createDonorDto.name,
+          email: createDonorDto.email,
+          password: hashedPassword,
+          bloodGroupNeeded: createDonorDto.bloodGroup,
+          phone: createDonorDto.phone,
+          address: createDonorDto.address,
+          hospital: createDonorDto.hospital || '',
+          urgency: createDonorDto.urgency || 'normal',
+        },
+        hashedPassword,
+      );
+    }
+
     return await this.donorService.createDonorWithPassword(
       createDonorDto,
       hashedPassword,
     );
   }
-
-
 
   public async loginDonor(
     loginDto: LoginDto,
@@ -84,12 +98,9 @@ export class AuthService {
     }
   }
 
-
   public async findAllDonors() {
     return await this.donorService.getAllDonors();
   }
-
-
 
   public async findDonorById(id: number) {
     return await this.donorService.getDonorById(
@@ -108,7 +119,6 @@ export class AuthService {
       password: hashedPassword,
     });
   }
-
 
   public async loginAdmin(
     loginDto: LoginDto,
@@ -148,7 +158,6 @@ export class AuthService {
       ),
     };
   }
-
 
   public async loginPatient(
     loginDto: LoginDto,

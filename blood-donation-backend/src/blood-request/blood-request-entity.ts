@@ -1,39 +1,46 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class BloodRequest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
+  patientId: number;
+
+  @Column({ nullable: true })
   patientName: string;
 
-  @Column()
+  @Column({ nullable: true })
+  patientPhone: string;
+
+  @Column({ nullable: true })
+  patientAddress: string;
+
+  @Column({ nullable: true })
+  bloodGroup: string;
+
+  @Column({ nullable: true })
   hospital: string;
 
-  @Column()
+  @Column({ nullable: true })
+  urgency: string;
+
+  @Column({ nullable: true })
+  phone: string;
+
+  @Column({ nullable: true })
   location: string;
 
-  @Column()
-  contactNumber: string;
+  @Column({ default: 'pending' })
+  status: string;
 
-  @Column()
-  bloodGroup: string;
+  @CreateDateColumn()
+  requestDate: Date;
 
   @Column({ nullable: true })
   message: string;
 
-  @Column({ default: 'pending' }) 
-  status: string;
-
-  @Column({ nullable: true }) 
-  acceptedBy: number;
-
-  @Column({ nullable: true }) 
-  acceptedAt: Date;
-@Column({
-  type: 'timestamp',
-  default: () => 'CURRENT_TIMESTAMP',
-})
-requestDate: Date;
+  @Column({ nullable: true })
+  donorId: number;
 }

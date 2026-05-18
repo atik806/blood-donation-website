@@ -3,10 +3,6 @@ import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 export class CreateBloodRequestDto {
   @IsString()
   @IsNotEmpty()
-  patientName: string;
-
-  @IsString()
-  @IsNotEmpty()
   bloodGroup: string;
 
   @IsString()
@@ -15,15 +11,15 @@ export class CreateBloodRequestDto {
 
   @IsString()
   @IsNotEmpty()
+  urgency: string;
+
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+
+  @IsString()
+  @IsNotEmpty()
   location: string;
-
-  @IsString()
-  @IsNotEmpty()
-  contactNumber: string;
-
-  @IsString()
-  @IsNotEmpty()
-  requestDate: string;
 
   @IsString()
   @IsOptional()
