@@ -1,20 +1,26 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Req,
+  Patch,
+} from '@nestjs/common';
+
 import { BloodRequestService } from './blood-request.service';
 import { CreateBloodRequestDto } from './create-blood-request.dto';
 
-
-
 @Controller('blood-request')
 export class BloodRequestController {
-    constructor(
+  constructor(
     private readonly bloodRequestService: BloodRequestService,
   ) {}
 
   // Create Blood Request
   @Post()
   createRequest(
-    @Body()
-    createBloodRequestDto: CreateBloodRequestDto,
+    @Body() createBloodRequestDto: CreateBloodRequestDto,
   ) {
     return this.bloodRequestService.createRequest(
       createBloodRequestDto,
@@ -29,11 +35,16 @@ export class BloodRequestController {
 
   // Get Request By Id
   @Get(':id')
-  getRequestById(
+  getRequestById(@Param('id') id: string) {
+    return this.bloodRequestService.getRequestById(+id);
+  }
+
+  // 
+  @Patch('accept/:id')
+  acceptRequest(
     @Param('id') id: string,
+    @Req() req,
   ) {
-    return this.bloodRequestService.getRequestById(
-      +id,
-    );
+    return this.bloodRequestService.acceptRequest(+id, req);
   }
 }

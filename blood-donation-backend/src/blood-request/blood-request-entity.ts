@@ -1,8 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class BloodRequest {
@@ -11,9 +7,6 @@ export class BloodRequest {
 
   @Column()
   patientName: string;
-
-  @Column()
-  bloodGroup: string;
 
   @Column()
   hospital: string;
@@ -25,10 +18,22 @@ export class BloodRequest {
   contactNumber: string;
 
   @Column()
-  requestDate: string;
+  bloodGroup: string;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({ nullable: true })
   message: string;
+
+  @Column({ default: 'pending' }) 
+  status: string;
+
+  @Column({ nullable: true }) 
+  acceptedBy: number;
+
+  @Column({ nullable: true }) 
+  acceptedAt: Date;
+@Column({
+  type: 'timestamp',
+  default: () => 'CURRENT_TIMESTAMP',
+})
+requestDate: Date;
 }
