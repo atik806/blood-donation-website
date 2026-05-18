@@ -93,6 +93,7 @@ export class BloodRequestService {
 
     request.status = 'accepted';
     request.donorId = donorId;
+    request.acceptedDate = new Date();
 
     await this.bloodRequestRepository.save(request);
 

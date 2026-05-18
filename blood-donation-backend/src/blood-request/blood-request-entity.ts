@@ -39,6 +39,9 @@ export class BloodRequest {
   requestDate: Date;
 
   @Column({ nullable: true })
+  acceptedDate: Date;
+
+  @Column({ nullable: true })
   message: string;
 
   @Column({ nullable: true })
