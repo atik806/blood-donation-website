@@ -25,7 +25,7 @@ export default function AdminDashboard() {
     }
   }, [router]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -111,19 +111,12 @@ export default function AdminDashboard() {
             <li onClick={() => router.push("/ManageDonors")}>Manage Donors</li>
             <li onClick={() => router.push("/ManagePatients")}>Manage Patients</li>
             <li onClick={() => router.push("/AllBloodRequest")}>All Blood Requests Information</li>
-            <li>View Admin Profile</li>
+            <li onClick={() => router.push("/AdminProfile")}>View Admin Profile</li>
+            <li onClick={() => router.push("/AdminManagement")}>Manage Admin</li>
           </ul>
         </div>
 
-        <div className="section-card">
-          <h2>Recent Activities</h2>
-          <ul className="activity-list">
-            <li>New donor registered</li>
-            <li>Blood request submitted</li>
-            <li>Patient account updated</li>
-            <li>Donor availability updated</li>
-          </ul>
-        </div>
+
       </div>
     </div>
   );

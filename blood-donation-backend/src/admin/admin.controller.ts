@@ -13,6 +13,7 @@ import { CreateAdminDto } from './admin.dto';
 import { JwtGuard } from 'src/auth/jwtGuard.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { Public } from 'src/auth/public.decorator';
 
 enum Role {
   ADMIN = 'admin',
@@ -25,6 +26,24 @@ export class AdminController {
   @Post()
   async create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
+  }
+
+  @Public()
+  @Get()
+  getAllAdmins() {
+    return this.adminService.getAllAdmins();
+  }
+
+  @Public()
+  @Patch(':id')
+  updateAdmin(@Param('id') id: string, @Body() data: any) {
+    return this.adminService.updateAdmin(+id, data);
+  }
+
+  @Public()
+  @Delete(':id')
+  deleteAdmin(@Param('id') id: string) {
+    return this.adminService.deleteAdmin(+id);
   }
 
   @UseGuards(JwtGuard, RolesGuard)

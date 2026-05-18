@@ -4,6 +4,7 @@ import { Admin } from './admin.entity';
 import { Donor } from 'src/donor/donor.entity';
 import { Repository } from 'typeorm';
 import { CreateAdminDto } from './admin.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AdminService {
@@ -21,8 +22,28 @@ export class AdminService {
     });
   }
 
+  public async getAllAdmins(){
+    return await this.adminRepository.find();
+  }
+
+  public async updateAdmin(id:number, updateData: Partial<Admin>){
+    await this.adminRepository.update(id, updateData);
+    return await this.adminRepository.findOne({
+      where: { id },
+    });
+  }
+
+  public async deleteAdmin(id:number){
+    await this.adminRepository.delete(id);
+    return { message: 'Admin deleted successfully' };
+  }
+
   async create(adminDto:CreateAdminDto){
-    const admin = this.adminRepository.create(adminDto);
+    const hashedPassword = await bcrypt.hash(adminDto.password, 10);
+    const admin = this.adminRepository.create({
+      ...adminDto,
+      password: hashedPassword,
+    });
     return await this.adminRepository.save(admin);
   }
 
