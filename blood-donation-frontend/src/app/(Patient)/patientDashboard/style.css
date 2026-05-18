@@ -89,14 +89,6 @@
   font-size: 1.1rem;
 }
 
-.info-item .value.pending {
-  color: #f39c12;
-}
-
-.info-item .value.fulfilled {
-  color: #27ae60;
-}
-
 .status-badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
@@ -104,6 +96,18 @@
   color: white;
   border-radius: 20px;
   font-size: 0.875rem;
+}
+
+.status-badge.normal {
+  background: #27ae60;
+}
+
+.status-badge.urgent {
+  background: #f39c12;
+}
+
+.status-badge.emergency {
+  background: #e74c3c;
 }
 
 .dashboard-sections {
@@ -135,7 +139,7 @@
 
 .action-btn {
   padding: 0.875rem 1rem;
-  background: #bd4f4f;
+  background: #2980b9;
   color: white;
   border: none;
   border-radius: 8px;
@@ -146,7 +150,7 @@
 }
 
 .action-btn:hover {
-  background: #f80000;
+  background: #3498db;
   transform: translateX(4px);
 }
 
@@ -157,17 +161,63 @@
 }
 
 .request-list li {
-  padding: 0.875rem 1rem;
-  margin-bottom: 0.5rem;
-  background: #ff0000;
-  color: white;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #f8f9fa;
+  border-left: 4px solid #2980b9;
   border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.request-list li::before {
-  content: "♥";
+.request-list li.no-requests {
+  background: #e8f4f8;
+  border-left-color: #2980b9;
   color: #2980b9;
+  justify-content: center;
+  font-style: italic;
+}
+
+.request-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.request-info .blood-group {
+  font-weight: 700;
+  color: #2980b9;
+  font-size: 1.1rem;
+}
+
+.request-info .hospital {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.request-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.request-status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.request-status.accepted {
+  background: #d4edda;
+  color: #155724;
 }

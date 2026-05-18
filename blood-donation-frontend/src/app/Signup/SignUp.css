@@ -1,55 +1,74 @@
-.container {
-  height: 100vh;
-  background: linear-gradient(to right, #f8caca, #f3bcbc);
+.signup-body {
+  background: linear-gradient(135deg, #fef5f5 0%, #fdf2f2 100%);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.container {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card {
-  background: #f2f2f2;
-  padding: 40px;
-  border-radius: 14px;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  max-width: 450px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+
 .title {
-  color: #dc2626;
-  margin-bottom: 10px;
-  font-size: 22px;
-  font-weight: 600;
+  color: #c0392b;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-
 .subtitle {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
 }
 
 .input {
-  padding: 12px;
+  padding: 0.875rem;
   border-radius: 8px;
-  border: 1px solid #803232;
+  border: 1.5px solid #e0e0e0;
   outline: none;
-  font-size: 14px;
-  background: #d8bebe;
-  transition: 0.3s;
+  font-size: 0.95rem;
+  background: #fafafa;
+  color: #333;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.input::placeholder {
+  color: #999;
 }
 
 .input:focus {
-  border-color: #dc2626;
-  
-  box-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
+  border-color: #c0392b;
+  background: white;
+  color: #333;
+  box-shadow: 0 0 8px rgba(192, 57, 43, 0.2);
+}
+
+.input:hover {
+  border-color: #d4756b;
 }
 
 /* Gender section */
@@ -57,43 +76,68 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 14px;
+  font-size: 0.95rem;
   color: #444;
+  padding: 0.5rem 0;
+  gap: 1rem;
 }
 
 .radioGroup label {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.5rem;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .radioGroup input {
-  accent-color: #dc2626;
+  accent-color: #c0392b;
   cursor: pointer;
+  width: 18px;
+  height: 18px;
 }
 
 /* Button */
 .button {
-  background: #dc2626;
-  color: #fff;
-  padding: 12px;
+  background: #c0392b;
+  color: white;
+  padding: 0.875rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: 0.3s;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
 }
 
 .button:hover {
-  background: #b91c1c;
+  background: #a93226;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3);
 }
 
+.button:active {
+  transform: translateY(0);
+}
 
-.signup-body {
-  background: linear-gradient(to right, #f8caca, #f3bcbc);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Responsive */
+@media (max-width: 600px) {
+  .card {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .radioGroup {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }

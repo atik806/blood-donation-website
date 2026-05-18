@@ -28,7 +28,7 @@ export default function ViewBloodRequests() {
         if (!token) return;
 
         const response = await fetch(
-          "http://localhost:3000/blood-request",
+          "http://localhost:3000/blood-request/pending/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ export default function ViewBloodRequests() {
         )
       );
 
-      alert("You accepted the request!");
+      router.push("/ThankYouDonor");
     } catch (err) {
       alert(err.message);
     }
@@ -153,9 +153,16 @@ export default function ViewBloodRequests() {
                 </div>
 
                 <div className="detail-row">
-                  <span className="detail-label">Contact</span>
+                  <span className="detail-label">Phone</span>
                   <span className="detail-value">
-                    {req.contactNumber}
+                    {req.phone}
+                  </span>
+                </div>
+
+                <div className="detail-row">
+                  <span className="detail-label">Urgency</span>
+                  <span className="detail-value">
+                    {req.urgency}
                   </span>
                 </div>
 

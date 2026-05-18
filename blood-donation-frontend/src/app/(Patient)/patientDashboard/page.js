@@ -19,6 +19,7 @@ export default function PatientDashboard() {
   }, [router]);
 
   const [patientData, setPatientData] = useState(null);
+  const [bloodRequests, setBloodRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,6 +47,32 @@ export default function PatientDashboard() {
       }
     };
     fetchPatient();
+  }, []);
+
+  useEffect(() => {
+    const fetchBloodRequests = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const response = await fetch(
+          `http://localhost:3000/blood-request/patient/${payload.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setBloodRequests(data);
+        }
+      } catch (error) {
+        console.log("Error fetching blood requests:", error);
+      }
+    };
+    fetchBloodRequests();
   }, []);
 
   const handleLogout = () => {
@@ -88,20 +115,16 @@ export default function PatientDashboard() {
             <span className="value blood-type">{patientData?.bloodGroupNeeded || "N/A"}</span>
           </div>
           <div className="info-item">
-            <span className="label">Urgency</span>
-            <span className="status-badge">{patientData?.urgency || "Active"}</span>
+            <span className="label">Phone</span>
+            <span className="value">{patientData?.phone || "N/A"}</span>
           </div>
         </div>
 
         <div className="info-card">
-          <h2>Request Status</h2>
+          <h2>Contact Information</h2>
           <div className="info-item">
             <span className="label">Hospital</span>
             <span className="value">{patientData?.hospital || "N/A"}</span>
-          </div>
-          <div className="info-item">
-            <span className="label">Phone</span>
-            <span className="value">{patientData?.phone || "N/A"}</span>
           </div>
           <div className="info-item">
             <span className="label">Address</span>
@@ -122,9 +145,25 @@ export default function PatientDashboard() {
         </div>
 
         <div className="section-card">
-          <h2>Recent Requests</h2>
+          <h2>Your Blood Requests ({bloodRequests.length})</h2>
           <ul className="request-list">
-            <li>{patientData?.bloodGroupNeeded || "Blood"} request - {patientData?.urgency || "Pending"}</li>
+            {bloodRequests.length > 0 ? (
+              bloodRequests.map((req) => (
+                <li key={req.id}>
+                  <div className="request-item">
+                    <div className="request-info">
+                      <span className="blood-group">{req.bloodGroup}</span>
+                      <span className="hospital">{req.hospital}</span>
+                    </div>
+                    <span className={`request-status ${req.status}`}>
+                      {req.status === "accepted" ? "✓ Accepted" : "⏳ Pending"}
+                    </span>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <li className="no-requests">No blood requests yet. Create one to get started!</li>
+            )}
           </ul>
         </div>
       </div>

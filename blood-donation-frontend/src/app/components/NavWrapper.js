@@ -5,13 +5,14 @@ import CustomNav from "./customNav";
 
 export default function NavWrapper({ children }) {
   const pathname = usePathname();
-  const showNav = !pathname.startsWith("/donorDashboard") && 
-                  !pathname.startsWith("/patientDashboard") && 
-                  !pathname.startsWith("/AdminDashboard")&&
-                  !pathname.startsWith("/UpdateAvailability")&&
-                  !pathname.startsWith("/newBloodRequest")&&
-                  !pathname.startsWith("/UpdateProfile");
-                  
+  const showNav = !pathname.startsWith("/donorDashboard") &&
+    !pathname.startsWith("/patientDashboard") &&
+    !pathname.startsWith("/AdminDashboard") &&
+    !pathname.startsWith("/UpdateAvailability") &&
+    !pathname.startsWith("/newBloodRequest") &&
+    !pathname.startsWith("/ThankYouDonor") &&
+    !pathname.startsWith("/UpdateProfile");
+
 
   return (
     <>

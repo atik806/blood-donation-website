@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import "./SignUp.css";
 
 import { useState } from "react";
@@ -16,8 +15,6 @@ export default function Signup() {
     phone: "",
     address: "",
     available: true,
-    hospital: "",
-    urgency: "normal",
   });
 
   const handleChange = (e) => {
@@ -35,24 +32,18 @@ export default function Signup() {
       return;
     }
 
-    let endpoint = "";
-    let payload = formData;
-
-    if (formData.role === "Donor") {
-      endpoint = "http://localhost:3000/auth/donor/register";
-    } else if (formData.role === "Patient") {
-      endpoint = "http://localhost:3000/patient";
-      payload = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        bloodGroupNeeded: formData.bloodGroup,
-        phone: formData.phone,
-        address: formData.address,
-        hospital: formData.hospital,
-        urgency: formData.urgency,
-      };
-    }
+    const endpoint = "http://localhost:3000/auth/register";
+    
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      bloodGroup: formData.bloodGroup,
+      phone: formData.phone,
+      address: formData.address,
+      gender: formData.gender,
+      role: formData.role,
+    };
 
     try {
       const response = await fetch(endpoint, {
@@ -167,30 +158,6 @@ export default function Signup() {
               <option value="Donor">Donor</option>
               <option value="Patient">Patient</option>
             </select>
-
-            {formData.role === "Patient" && (
-              <>
-                <input
-                  type="text"
-                  name="hospital"
-                  placeholder="Hospital Name"
-                  className="input"
-                  value={formData.hospital}
-                  onChange={handleChange}
-                  required
-                />
-                <select
-                  name="urgency"
-                  className="input"
-                  value={formData.urgency}
-                  onChange={handleChange}
-                >
-                  <option value="normal">Normal</option>
-                  <option value="urgent">Urgent</option>
-                  <option value="emergency">Emergency</option>
-                </select>
-              </>
-            )}
 
             <input
               type="text"

@@ -32,10 +32,28 @@ body {
 h1 {
   text-align: center;
   color: darkred;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 0.5px;
+}
+
+.patient-info {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border-left: 4px solid darkred;
+}
+
+.patient-info p {
+  margin: 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.patient-info strong {
+  color: darkred;
 }
 
 .form-group {
@@ -51,7 +69,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 12px 14px;
   border: 1.5px solid #e0d0d0;
@@ -61,26 +80,42 @@ textarea {
   background-color: #fcfafa;
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-}
-
-input:hover,
-textarea:hover {
-  background-color: #fff;
-  border-color: #c0a0a0;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: darkred;
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+  font-family: inherit;
 }
 
 input::placeholder,
 textarea::placeholder {
   color: #b0a0a0;
   font-size: 14px;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  background-color: #fff;
+  border-color: #c0a0a0;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: darkred;
+  background-color: white;
+  color: #1a1a1a;
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+}
+
+input:read-only {
+  background-color: #f0f0f0;
+  border-color: #d0d0d0;
+  cursor: not-allowed;
+  color: #666;
+}
+
+input:read-only:hover {
+  background-color: #f0f0f0;
+  border-color: #d0d0d0;
 }
 
 textarea {
