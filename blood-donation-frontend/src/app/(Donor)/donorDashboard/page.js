@@ -33,6 +33,12 @@ const [donorData, setDonorData] = useState(null);
             },
           }
         );
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          router.push("/Login");
+          return;
+        }
         if (!response.ok) {
           console.error("Failed to fetch:", response.status);
           setLoading(false);
@@ -48,7 +54,7 @@ const [donorData, setDonorData] = useState(null);
       }
     };
     fetchDonor();
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -114,8 +120,8 @@ const [donorData, setDonorData] = useState(null);
           <div className="action-buttons">
             <button className="action-btn" onClick={() => router.push("/UpdateProfile")}>Update Profile</button>
             <button className="action-btn" onClick={() => router.push("/UpdateAvailability")}>Update Availability</button>
-            <button className="action-btn">View Donation History</button>
-            <button className="action-btn">View Blood Requests</button>
+            <button className="action-btn" >View Donation History</button>
+            <button className="action-btn" onClick={() => router.push("/viewBloodRequests")}>View Blood Requests</button>
           </div>
         </div>
 

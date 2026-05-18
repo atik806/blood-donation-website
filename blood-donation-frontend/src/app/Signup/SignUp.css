@@ -42,13 +42,13 @@
   border: 1px solid #803232;
   outline: none;
   font-size: 14px;
-  background: #a58484;
+  background: #d8bebe;
   transition: 0.3s;
 }
 
 .input:focus {
   border-color: #dc2626;
-  background: #994343;
+  
   box-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
 }
 
