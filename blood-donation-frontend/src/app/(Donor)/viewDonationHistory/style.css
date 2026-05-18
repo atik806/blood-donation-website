@@ -1,0 +1,15 @@
+/* Tailwind CSS handles all styling - this file is kept for reference */
+/* All styles are now inline using Tailwind utility classes */
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
