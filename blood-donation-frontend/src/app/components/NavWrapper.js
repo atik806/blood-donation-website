@@ -11,6 +11,7 @@ export default function NavWrapper({ children }) {
     !pathname.startsWith("/UpdateAvailability") &&
     !pathname.startsWith("/newBloodRequest") &&
     !pathname.startsWith("/ThankYouDonor") &&
+    !pathname.startsWith("/viewRequestHistory") &&
     !pathname.startsWith("/UpdateProfile");
 
 

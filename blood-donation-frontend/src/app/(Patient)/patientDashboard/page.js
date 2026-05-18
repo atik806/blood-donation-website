@@ -139,7 +139,7 @@ export default function PatientDashboard() {
           <div className="action-buttons">
             <button className="action-btn" onClick={() => router.push("/UpdatePatientProfile")}>Update Profile</button>
             <button className="action-btn"onClick={() => router.push("/newBloodRequest")}>New Blood Request</button>
-            <button className="action-btn">View Request History</button>
+            <button className="action-btn"onClick={() => router.push("/viewRequestHistory")}>View Request History</button>
             <button className="action-btn">Contact Donors</button>
           </div>
         </div>
