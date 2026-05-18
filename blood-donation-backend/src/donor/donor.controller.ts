@@ -22,8 +22,7 @@ export class DonorController {
     return this.donorService.createDonor(createDonorDto);
   }
 
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Public()
   @Get()
   getAllDonors() {
     return this.donorService.getAllDonors();

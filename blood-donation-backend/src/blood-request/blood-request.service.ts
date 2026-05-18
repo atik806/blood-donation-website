@@ -95,11 +95,16 @@ export class BloodRequestService {
     request.donorId = donorId;
     request.acceptedDate = new Date();
 
+    // Get donor name from donor service
+    const donor = await this.donorService.getDonorById(donorId);
+    if (donor) {
+      request.donorName = donor.name;
+    }
+
     await this.bloodRequestRepository.save(request);
 
     // Update donor stats - increment total donations and set last donation date
     const today = new Date().toISOString().split('T')[0];
-    const donor = await this.donorService.getDonorById(donorId);
     const newTotalDonations = (donor?.totalDonations || 0) + 1;
     
     await this.donorService.updateDonor(donorId, {

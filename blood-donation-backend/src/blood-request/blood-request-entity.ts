@@ -46,4 +46,7 @@ export class BloodRequest {
 
   @Column({ nullable: true })
   donorId: number;
+
+  @Column({ nullable: true })
+  donorName: string;
 }
