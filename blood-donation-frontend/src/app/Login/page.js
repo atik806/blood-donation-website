@@ -179,6 +179,16 @@ export default function Login() {
               Sign Up
             </Link>
           </p>
+
+          <p className="text-center text-black text-sm">
+            Forgot your password?{" "}
+            <Link
+              href="/ForgotPassword"
+              className="text-red-600 font-semibold hover:underline"
+            >
+              Reset Password
+            </Link>
+          </p>
         </form>
       </div>
     </div>

@@ -26,6 +26,13 @@ export class PatientService {
     createPatientDto: CreatePatientDto,
     hashedPassword: string,
   ) {
+    console.log('Creating patient with:', {
+      name: createPatientDto.name,
+      email: createPatientDto.email,
+      petName: createPatientDto.petName,
+      favoriteColor: createPatientDto.favoriteColor,
+    });
+
     const patient =
       this.patientRepository.create({
         ...createPatientDto,

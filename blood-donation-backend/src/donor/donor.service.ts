@@ -30,6 +30,8 @@ export class DonorService {
       address: createDonorDto.address ?? null,
       available: createDonorDto.available ?? true,
       roles: 'donor',
+      petName: createDonorDto.petName ?? null,
+      favoriteColor: createDonorDto.favoriteColor ?? null,
     });
 
     return this.donorRepository.save(donor);

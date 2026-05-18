@@ -27,6 +27,11 @@ export class AdminService {
   }
 
   public async updateAdmin(id:number, updateData: Partial<Admin>){
+    // Hash password if it's being updated
+    if (updateData.password) {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
+    }
+    
     await this.adminRepository.update(id, updateData);
     return await this.adminRepository.findOne({
       where: { id },

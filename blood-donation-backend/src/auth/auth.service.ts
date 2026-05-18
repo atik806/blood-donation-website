@@ -1,6 +1,6 @@
 import {
-  BadRequestException,
-  Injectable,
+    BadRequestException,
+    Injectable,
 } from '@nestjs/common';
 
 import { DonorService } from '../donor/donor.service';
@@ -15,186 +15,188 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly donorService: DonorService,
-    private readonly adminService: AdminService,
-    private readonly patientService: PatientService,
-    private readonly jwtService: JwtService,
-  ) { }
+    constructor(
+        private readonly donorService: DonorService,
+        private readonly adminService: AdminService,
+        private readonly patientService: PatientService,
+        private readonly jwtService: JwtService,
+    ) { }
 
-  public async registerDonor(
-    createDonorDto: CreateDonorDto,
-  ) {
-    const hashedPassword = await bcrypt.hash(
-      createDonorDto.password,
-      10,
-    );
-
-    const role = createDonorDto.role || 'donor';
-
-    if (role === 'patient') {
-      return await this.patientService.createPatientWithPassword(
-        {
-          name: createDonorDto.name,
-          email: createDonorDto.email,
-          password: hashedPassword,
-          bloodGroupNeeded: createDonorDto.bloodGroup,
-          phone: createDonorDto.phone,
-          address: createDonorDto.address,
-          hospital: createDonorDto.hospital || '',
-          urgency: createDonorDto.urgency || 'normal',
-        },
-        hashedPassword,
-      );
-    }
-
-    return await this.donorService.createDonorWithPassword(
-      createDonorDto,
-      hashedPassword,
-    );
-  }
-
-  public async loginDonor(
-    loginDto: LoginDto,
-  ) {
-    try {
-      const donor =
-        await this.donorService.getDonorByEmail(
-          loginDto.email,
+    public async registerDonor(
+        createDonorDto: CreateDonorDto,
+    ) {
+        const hashedPassword = await bcrypt.hash(
+            createDonorDto.password,
+            10,
         );
 
-      if (!donor) {
-        throw new BadRequestException(
-          'Invalid email or password',
+        const role = (createDonorDto.role || 'donor').toLowerCase();
+
+        if (role === 'patient') {
+            return await this.patientService.createPatientWithPassword(
+                {
+                    name: createDonorDto.name,
+                    email: createDonorDto.email,
+                    password: hashedPassword,
+                    bloodGroupNeeded: createDonorDto.bloodGroup,
+                    phone: createDonorDto.phone,
+                    address: createDonorDto.address,
+                    hospital: createDonorDto.hospital || '',
+                    urgency: createDonorDto.urgency || 'normal',
+                    petName: createDonorDto.petName,
+                    favoriteColor: createDonorDto.favoriteColor,
+                },
+                hashedPassword,
+            );
+        }
+
+        return await this.donorService.createDonorWithPassword(
+            createDonorDto,
+            hashedPassword,
         );
-      }
+    }
 
-      const isPasswordValid = await bcrypt.compare(
-        loginDto.password,
-        donor.password,
-      );
+    public async loginDonor(
+        loginDto: LoginDto,
+    ) {
+        try {
+            const donor =
+                await this.donorService.getDonorByEmail(
+                    loginDto.email,
+                );
 
-      if (!isPasswordValid) {
-        throw new BadRequestException(
-          'Invalid email or password',
+            if (!donor) {
+                throw new BadRequestException(
+                    'Invalid email or password',
+                );
+            }
+
+            const isPasswordValid = await bcrypt.compare(
+                loginDto.password,
+                donor.password,
+            );
+
+            if (!isPasswordValid) {
+                throw new BadRequestException(
+                    'Invalid email or password',
+                );
+            }
+
+            const payload = {
+                id: donor.id,
+                email: donor.email,
+                role: 'donor',
+            };
+
+            return {
+                role: 'donor',
+                access_token: this.jwtService.sign(
+                    payload,
+                ),
+            };
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
+    }
+
+    public async findAllDonors() {
+        return await this.donorService.getAllDonors();
+    }
+
+    public async findDonorById(id: number) {
+        return await this.donorService.getDonorById(
+            id,
         );
-      }
-
-      const payload = {
-        id: donor.id,
-        email: donor.email,
-        role: 'donor',
-      };
-
-      return {
-        role: 'donor',
-        access_token: this.jwtService.sign(
-          payload,
-        ),
-      };
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
-  }
-
-  public async findAllDonors() {
-    return await this.donorService.getAllDonors();
-  }
-
-  public async findDonorById(id: number) {
-    return await this.donorService.getDonorById(
-      id,
-    );
-  }
-
-  public async registerAdmin(body: any) {
-    const hashedPassword = await bcrypt.hash(
-      body.password,
-      10,
-    );
-
-    return await this.adminService.create({
-      ...body,
-      password: hashedPassword,
-    });
-  }
-
-  public async loginAdmin(
-    loginDto: LoginDto,
-  ) {
-    const admin =
-      await this.adminService.findByEmail(
-        loginDto.email,
-      );
-
-    if (!admin) {
-      throw new BadRequestException(
-        'Invalid email or password',
-      );
     }
 
-    const isPassValid = await bcrypt.compare(
-      loginDto.password,
-      admin.password,
-    );
+    public async registerAdmin(body: any) {
+        const hashedPassword = await bcrypt.hash(
+            body.password,
+            10,
+        );
 
-    if (!isPassValid) {
-      throw new BadRequestException(
-        'Invalid email or password',
-      );
+        return await this.adminService.create({
+            ...body,
+            password: hashedPassword,
+        });
     }
 
-    const payload = {
-      id: admin.id,
-      email: admin.email,
-      role: 'admin',
-    };
+    public async loginAdmin(
+        loginDto: LoginDto,
+    ) {
+        const admin =
+            await this.adminService.findByEmail(
+                loginDto.email,
+            );
 
-    return {
-      role: 'admin',
-      access_token: this.jwtService.sign(
-        payload,
-      ),
-    };
-  }
+        if (!admin) {
+            throw new BadRequestException(
+                'Invalid email or password',
+            );
+        }
 
-  public async loginPatient(
-    loginDto: LoginDto,
-  ) {
-    const patient =
-      await this.patientService.getPatientByEmail(
-        loginDto.email,
-      );
+        const isPassValid = await bcrypt.compare(
+            loginDto.password,
+            admin.password,
+        );
 
-    if (!patient) {
-      throw new BadRequestException(
-        'Invalid email or password',
-      );
+        if (!isPassValid) {
+            throw new BadRequestException(
+                'Invalid email or password',
+            );
+        }
+
+        const payload = {
+            id: admin.id,
+            email: admin.email,
+            role: 'admin',
+        };
+
+        return {
+            role: 'admin',
+            access_token: this.jwtService.sign(
+                payload,
+            ),
+        };
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      loginDto.password,
-      patient.password,
-    );
+    public async loginPatient(
+        loginDto: LoginDto,
+    ) {
+        const patient =
+            await this.patientService.getPatientByEmail(
+                loginDto.email,
+            );
 
-    if (!isPasswordValid) {
-      throw new BadRequestException(
-        'Invalid email or password',
-      );
+        if (!patient) {
+            throw new BadRequestException(
+                'Invalid email or password',
+            );
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+            loginDto.password,
+            patient.password,
+        );
+
+        if (!isPasswordValid) {
+            throw new BadRequestException(
+                'Invalid email or password',
+            );
+        }
+
+        const payload = {
+            id: patient.id,
+            email: patient.email,
+            role: 'patient',
+        };
+
+        return {
+            role: 'patient',
+            access_token: this.jwtService.sign(
+                payload,
+            ),
+        };
     }
-
-    const payload = {
-      id: patient.id,
-      email: patient.email,
-      role: 'patient',
-    };
-
-    return {
-      role: 'patient',
-      access_token: this.jwtService.sign(
-        payload,
-      ),
-    };
-  }
 }

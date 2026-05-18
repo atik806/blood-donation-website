@@ -49,4 +49,12 @@ export class CreateDonorDto {
   @IsOptional()
   @IsString()
   urgency: string;
+
+  @IsOptional()
+  @IsString()
+  petName: string;
+
+  @IsOptional()
+  @IsString()
+  favoriteColor: string;
 }

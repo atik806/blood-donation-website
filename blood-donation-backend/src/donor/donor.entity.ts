@@ -32,6 +32,12 @@ export class Donor {
   @Column({ nullable: true })
   lastDonationDate: string;
 
-@Column({ default: 0 })
-totalDonations: number;
+  @Column({ default: 0 })
+  totalDonations: number;
+
+  @Column({ nullable: true })
+  petName: string;
+
+  @Column({ nullable: true })
+  favoriteColor: string;
 }

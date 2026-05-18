@@ -40,5 +40,9 @@ export class Patient{
      })
     roles: string;
 
+    @Column({ type: 'varchar', nullable: true })
+    petName: string;
 
+    @Column({ type: 'varchar', nullable: true })
+    favoriteColor: string;
 }

@@ -16,6 +16,19 @@ export default function AdminProfile() {
     confirmPassword: '',
   });
   const [creating, setCreating] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    email: '',
+  });
+  const [editing, setEditing] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [passwordFormData, setPasswordFormData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -57,6 +70,132 @@ export default function AdminProfile() {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleEditClick = () => {
+    setEditFormData({
+      name: adminData?.name || '',
+      email: adminData?.email || '',
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditFormChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData({
+      ...editFormData,
+      [name]: value,
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editFormData.name || !editFormData.email) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    setEditing(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      
+      const response = await fetch(`http://localhost:3000/admin/${payload.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(editFormData),
+      });
+
+      if (response.ok) {
+        setAdminData({
+          ...adminData,
+          name: editFormData.name,
+          email: editFormData.email,
+        });
+        setShowEditModal(false);
+        alert('Profile updated successfully');
+      } else {
+        const errorData = await response.json();
+        alert('Failed to update profile: ' + (errorData.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.log('Error updating profile:', error);
+      alert('Error updating profile: ' + error.message);
+    } finally {
+      setEditing(false);
+    }
+  };
+
+  const handleCreateAdminFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handlePasswordFormChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordFormData({
+      ...passwordFormData,
+      [name]: value,
+    });
+  };
+
+  const handleChangePassword = async () => {
+    if (!passwordFormData.currentPassword || !passwordFormData.newPassword || !passwordFormData.confirmPassword) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    if (passwordFormData.newPassword !== passwordFormData.confirmPassword) {
+      alert('New passwords do not match');
+      return;
+    }
+
+    if (passwordFormData.newPassword.length < 6) {
+      alert('New password must be at least 6 characters');
+      return;
+    }
+
+    setChangingPassword(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      
+      const response = await fetch(`http://localhost:3000/admin/${payload.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          password: passwordFormData.newPassword,
+        }),
+      });
+
+      if (response.ok) {
+        setPasswordFormData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+        setShowChangePasswordModal(false);
+        alert('Password changed successfully');
+      } else {
+        const errorData = await response.json();
+        alert('Failed to change password: ' + (errorData.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.log('Error changing password:', error);
+      alert('Error changing password: ' + error.message);
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   const handleCreateAdmin = async () => {
@@ -135,6 +274,9 @@ export default function AdminProfile() {
         <div className="profile-card">
           <div className="card-header">
             <h2>Your Profile</h2>
+            <button onClick={handleEditClick} className="edit-profile-btn">
+              Edit Profile
+            </button>
           </div>
 
           <div className="profile-info">
@@ -165,6 +307,10 @@ export default function AdminProfile() {
                 <span className="value status-badge active">Active</span>
               </div>
             </div>
+
+            <button onClick={() => setShowChangePasswordModal(true)} className="change-password-btn">
+              Change Password
+            </button>
           </div>
         </div>
 
@@ -179,6 +325,114 @@ export default function AdminProfile() {
           </button>
         </div>
       </div>
+
+      {showChangePasswordModal && (
+        <div className="modal-overlay" onClick={() => setShowChangePasswordModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Change Password</h2>
+              <button onClick={() => setShowChangePasswordModal(false)} className="modal-close">
+                X
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Current Password</label>
+                <input
+                  type="password"
+                  name="currentPassword"
+                  value={passwordFormData.currentPassword}
+                  onChange={handlePasswordFormChange}
+                  placeholder="Enter current password"
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  value={passwordFormData.newPassword}
+                  onChange={handlePasswordFormChange}
+                  placeholder="Enter new password (min 6 characters)"
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Confirm New Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={passwordFormData.confirmPassword}
+                  onChange={handlePasswordFormChange}
+                  placeholder="Confirm new password"
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button onClick={() => setShowChangePasswordModal(false)} className="btn btn-cancel">
+                Cancel
+              </button>
+              <button onClick={handleChangePassword} disabled={changingPassword} className="btn btn-save">
+                {changingPassword ? 'Changing...' : 'Change Password'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showEditModal && (
+        <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Edit Profile</h2>
+              <button onClick={() => setShowEditModal(false)} className="modal-close">
+                X
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={editFormData.name}
+                  onChange={handleEditFormChange}
+                  placeholder="Enter admin name"
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={editFormData.email}
+                  onChange={handleEditFormChange}
+                  placeholder="Enter admin email"
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button onClick={() => setShowEditModal(false)} className="btn btn-cancel">
+                Cancel
+              </button>
+              <button onClick={handleSaveEdit} disabled={editing} className="btn btn-save">
+                {editing ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showCreateModal && (
         <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
@@ -197,7 +451,7 @@ export default function AdminProfile() {
                   type="text"
                   name="name"
                   value={formData.name}
-                  onChange={handleFormChange}
+                  onChange={handleCreateAdminFormChange}
                   placeholder="Enter admin name"
                   className="form-input"
                 />
@@ -209,7 +463,7 @@ export default function AdminProfile() {
                   type="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleFormChange}
+                  onChange={handleCreateAdminFormChange}
                   placeholder="Enter admin email"
                   className="form-input"
                 />
@@ -221,7 +475,7 @@ export default function AdminProfile() {
                   type="password"
                   name="password"
                   value={formData.password}
-                  onChange={handleFormChange}
+                  onChange={handleCreateAdminFormChange}
                   placeholder="Enter password (min 6 characters)"
                   className="form-input"
                 />
@@ -233,7 +487,7 @@ export default function AdminProfile() {
                   type="password"
                   name="confirmPassword"
                   value={formData.confirmPassword}
-                  onChange={handleFormChange}
+                  onChange={handleCreateAdminFormChange}
                   placeholder="Confirm password"
                   className="form-input"
                 />

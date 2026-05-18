@@ -24,10 +24,8 @@ export class PatientController {
         @Body()
         createPatientDto: CreatePatientDto,
     ) {
-        const hashedPassword = await bcrypt.hash(createPatientDto.password, 10);
-        return this.patientService.createPatientWithPassword(
+        return this.patientService.createPatient(
             createPatientDto,
-            hashedPassword,
         );
     }
 
@@ -50,10 +48,13 @@ export class PatientController {
 
     @Public()
     @Patch(':id')
-    updatePatient(
+    async updatePatient(
         @Param('id') id: string,
         @Body() updateData: any,
     ) {
+        if (updateData.password) {
+            updateData.password = await bcrypt.hash(updateData.password, 10);
+        }
         return this.patientService.updatePatient(
             +id,
             updateData,

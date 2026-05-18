@@ -34,10 +34,9 @@ export class CreatePatientDto{
     @IsString()
     urgency: string;
 
-    
+    @IsString()
+    petName: string;
 
-
-
-
-
+    @IsString()
+    favoriteColor: string;
 }

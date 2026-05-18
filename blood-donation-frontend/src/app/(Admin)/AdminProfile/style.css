@@ -69,6 +69,9 @@
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-header h2 {
@@ -84,10 +87,46 @@
   margin: 8px 0 0 0;
 }
 
+.edit-profile-btn {
+  background: linear-gradient(to right, #0891b2, #0e7490);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+}
+
+.edit-profile-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
 .profile-info {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.change-password-btn {
+  width: 100%;
+  background: linear-gradient(to right, #f59e0b, #d97706);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.change-password-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
 .avatar {
@@ -305,6 +344,20 @@
 }
 
 .btn-create:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-save {
+  background: linear-gradient(to right, #0891b2, #0e7490);
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-save:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

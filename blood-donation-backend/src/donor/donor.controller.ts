@@ -7,6 +7,7 @@ import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { Public } from 'src/auth/public.decorator';
 import { Req } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 enum Role {
   ADMIN = 'admin',
   DONOR = 'donor',
@@ -43,10 +44,12 @@ export class DonorController {
     return this.donorService.getDonorById(+id);
   }
 
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.DONOR)
+  @Public()
   @Patch(':id')
-  updateDonor(@Param('id') id: string, @Body() updateData: any) {
+  async updateDonor(@Param('id') id: string, @Body() updateData: any) {
+    if (updateData.password) {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
+    }
     return this.donorService.updateDonor(+id, updateData);
   }
 

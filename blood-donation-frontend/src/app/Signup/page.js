@@ -15,6 +15,8 @@ export default function Signup() {
     phone: "",
     address: "",
     available: true,
+    petName: "",
+    favoriteColor: "",
   });
 
   const handleChange = (e) => {
@@ -43,6 +45,8 @@ export default function Signup() {
       address: formData.address,
       gender: formData.gender,
       role: formData.role,
+      petName: formData.petName,
+      favoriteColor: formData.favoriteColor,
     };
 
     try {
@@ -175,6 +179,26 @@ export default function Signup() {
               placeholder="Address"
               className="input"
               value={formData.address}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="text"
+              name="petName"
+              placeholder="Security Question 1: What is your pet name?"
+              className="input"
+              value={formData.petName}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="text"
+              name="favoriteColor"
+              placeholder="Security Question 2: What is your favourite color?"
+              className="input"
+              value={formData.favoriteColor}
               onChange={handleChange}
               required
             />
