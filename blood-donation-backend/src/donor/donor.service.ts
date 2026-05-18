@@ -10,7 +10,7 @@ export class DonorService {
   constructor(
     @InjectRepository(Donor)
     private donorRepository: Repository<Donor>,
-  ) {}
+  ) { }
 
   public async createDonor(createDonorDto: CreateDonorDto): Promise<Donor> {
     const hashedPassword = await bcrypt.hash(createDonorDto.password, 10);
